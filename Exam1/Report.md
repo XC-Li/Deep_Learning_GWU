@@ -7,3 +7,6 @@ Setting: Epoch=10, learning rate=0.1,momentum = 0.9, hidder size=30.
 I will fine tune the hyper-parameters in the future.  
 
 ## Question 2
+Time for running on CPU is 8.5 sec per epoch, however using cuda didn't speed up the training significantly.  
+Overall accuracy is 44% with the same hyper-parameter.
+
