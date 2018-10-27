@@ -1,5 +1,5 @@
 """Machine Learning 2 Section 10 @ GWU
-Exam 1 - Solution for Q2
+Exam 1 - Solution for Q4
 Author: Xiaochi (George) Li"""
 
 # ---------------------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ torch.cuda.manual_seed(42)
 # --------------------------------------------------------------------------------------------
 # Choose the right values for x.
 input_size = 3 * 32 * 32
-hidden_size = 30
+hidden_size = 60
 num_classes = 10
 num_epochs = 10
 batch_size = 10000
@@ -43,13 +43,22 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
         self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_size, num_classes)
+        self.fc2 = nn.Linear(hidden_size, 59)
+        self.fc3 = nn.Linear(59, 40)
+        self.fc4 = nn.Linear(40, 20)
+        self.fc5 = nn.Linear(20, num_classes)
         self.t2 = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
         out = self.fc1(x)
         out = self.relu(out)
         out = self.fc2(out)
+        out = self.relu(out)
+        out = self.fc3(out)
+        out = self.relu(out)
+        out = self.fc4(out)
+        out = self.relu(out)
+        out = self.fc5(out)
         out = self.t2(out)
         return out
 # --------------------------------------------------------------------------------------------
@@ -62,6 +71,7 @@ criterion = nn.NLLLoss()
 optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
 # --------------------------------------------------------------------------------------------
 # Loop in epochs
+total_time = 0
 for epoch in range(num_epochs):
     # Loop in batches
     start_time = timeit.default_timer()
@@ -77,7 +87,9 @@ for epoch in range(num_epochs):
 
         # print('Epoch [%d/%d], Step [%d/%d], Loss: %.4f' % (epoch + 1, num_epochs, i + 1, 50000/batch_size, loss.item()))
     elapsed = timeit.default_timer() - start_time
+    total_time += elapsed
     print('Epoch [%d/%d],  Loss: %.4f, Time:%4f' % (epoch + 1, num_epochs, loss.item(), elapsed))
+print("Average time:", total_time/num_epochs)
 # --------------------------------------------------------------------------------------------
 # Overall accuracy rate
 correct = 0

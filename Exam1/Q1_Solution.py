@@ -12,6 +12,7 @@ import torch.nn as nn
 from torch.autograd import Variable
 import torch.optim as optim
 import timeit
+torch.set_num_threads(8)
 # --------------------------------------------------------------------------------------------
 # Choose the right values for x.
 input_size = 3 * 32 * 32

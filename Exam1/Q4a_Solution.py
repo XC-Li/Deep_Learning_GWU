@@ -16,7 +16,7 @@ torch.cuda.manual_seed(42)
 # --------------------------------------------------------------------------------------------
 # Choose the right values for x.
 input_size = 3 * 32 * 32
-hidden_size = 30
+hidden_size = 60
 num_classes = 10
 num_epochs = 10
 batch_size = 10000
@@ -62,6 +62,7 @@ criterion = nn.NLLLoss()
 optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
 # --------------------------------------------------------------------------------------------
 # Loop in epochs
+total_time = 0
 for epoch in range(num_epochs):
     # Loop in batches
     start_time = timeit.default_timer()
@@ -77,7 +78,9 @@ for epoch in range(num_epochs):
 
         # print('Epoch [%d/%d], Step [%d/%d], Loss: %.4f' % (epoch + 1, num_epochs, i + 1, 50000/batch_size, loss.item()))
     elapsed = timeit.default_timer() - start_time
+    total_time += elapsed
     print('Epoch [%d/%d],  Loss: %.4f, Time:%4f' % (epoch + 1, num_epochs, loss.item(), elapsed))
+print("Average time:", total_time/num_epochs)
 # --------------------------------------------------------------------------------------------
 # Overall accuracy rate
 correct = 0
