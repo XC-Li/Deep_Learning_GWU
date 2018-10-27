@@ -18,7 +18,7 @@ torch.cuda.manual_seed(42)
 input_size = 3 * 32 * 32
 hidden_size = 60
 num_classes = 10
-num_epochs = 60
+num_epochs = 10
 batch_size = 10000
 learning_rate = 0.1
 momentum = 0.9
@@ -42,13 +42,13 @@ class Net(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
         super(Net, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
-        self.relu = nn.ReLU()
+        self.transfer = nn.Sigmoid()
         self.fc2 = nn.Linear(hidden_size, num_classes)
         self.t2 = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
         out = self.fc1(x)
-        out = self.relu(out)
+        out = self.transfer(out)
         out = self.fc2(out)
         out = self.t2(out)
         return out

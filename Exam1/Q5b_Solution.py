@@ -1,5 +1,5 @@
 """Machine Learning 2 Section 10 @ GWU
-Exam 1 - Solution for Q4
+Exam 1 - Solution for Q5
 Author: Xiaochi (George) Li"""
 
 # ---------------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ torch.cuda.manual_seed(42)
 input_size = 3 * 32 * 32
 hidden_size = 60
 num_classes = 10
-num_epochs = 60
+num_epochs = 10
 batch_size = 10000
 learning_rate = 0.1
 momentum = 0.9
@@ -59,7 +59,7 @@ net.cuda()
 # --------------------------------------------------------------------------------------------
 # Choose the loss function and optimization method
 criterion = nn.NLLLoss()
-optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
+optimizer = optim.SGD(net.parameters(), lr=learning_rate)
 # --------------------------------------------------------------------------------------------
 # Loop in epochs
 total_time = 0

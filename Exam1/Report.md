@@ -30,5 +30,33 @@ parameter is 184737.
 
 It can be easily seen that more layers will harm the performance.
 
+## Question 5
+We copied Q4a to Q5a as the first optimizer option. And tried several optimizer as the table shows.   
+We used learning_rate = 0.1, momentum = 0.9 as hyper-parameter.
+
+|Name|Accuracy|Average time per epoch|Optimizer|
+|----|----|----|----|
+|Q5a|45%|8.38|optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)|
+|Q5b|37%|8.31|optim.SGD(net.parameters(), lr=learning_rate)|
+|Q5c|21%|8.25|optim.RMSprop(net.parameters(), lr=learning_rate)|
+|Q5d|19%|8.28|optim.RMSprop(net.parameters(), lr=learning_rate, momentum=momentum)|
+|Q5e|19%|8.40|optim.Adam(net.parameters(),lr=learning_rate)|
+
+Conclusion: Stochastic Gradient Descent with momentum is the best optimizer we have. 
+
+## Question 6
+We copied Q4a to Q6a as the first transfer function option.  
+
+|Name|Transfer function|Accuracy|Average time per epoch|
+|----|----|----|----|
+|Q6a|ReLU|45%|8.46|
+|Q6b|Sigmoid|36%|8.34|
+|Q6c|Leaky ReLU|45%|8.45|
+|Q6d|PReLU|45%|8.35|
+|Q6e|Tanh|42%|8.29|
+
+Conclusion: ReLU based transfer function works better than Sigmoid and Tanh as expected.  
+The reason is that ReLU preserve a bigger gradient when the input is far from zero. Thus prevented gradient shrinkage.
+
 
 
