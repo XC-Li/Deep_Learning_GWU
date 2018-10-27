@@ -1,3 +1,7 @@
+"""Machine Learning 2 Section 10 @ GWU
+Exam 1 - Solution for Q1
+Author: Xiaochi (George) Li"""
+
 # ---------------------------------------------------------------------------------------------
 import torch
 import torchvision
@@ -29,22 +33,25 @@ testset = torchvision.datasets.CIFAR10(root='./data_cifar', train=False, downloa
 test_loader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False)
 
 # Find the right classes name. Save it as a tuple of size 10.
-classes = ('', '', ...)
+classes = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 # --------------------------------------------------------------------------------------------
+# This function which is used to show some random sample picture is irrelevant to our main focus.
+# So I will just comment it out
+'''
 # def imshow(img):
 #     img = img / 2 + 0.5
 #     npimg = img.numpy()
 #     plt.imshow(np.transpose(npimg, (1, 2, 0)))
-#
-#
+# 
+# 
 # dataiter = iter(train_loader)
 # images, labels = dataiter.next()
-#
+# 
 # imshow(torchvision.utils.make_grid(images))
 # print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
-
+'''
 # --------------------------------------------------------------------------------------------
-# Choose the right argument for xx
+# Define Neural Network
 class Net(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
         super(Net, self).__init__()
@@ -60,19 +67,20 @@ class Net(nn.Module):
         out = self.t2(out)
         return out
 # --------------------------------------------------------------------------------------------
-# Choose the right argument for x
+# Instantiation of the Neural Network
 net = Net(input_size, hidden_size, num_classes)
 # --------------------------------------------------------------------------------------------
-# Choose the right argument for x
+# Choose the loss function and optimization method
 criterion = nn.NLLLoss()
 optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
 # --------------------------------------------------------------------------------------------
-# There is bug here find it and fix it
+# Loop in epochs
 for epoch in range(num_epochs):
+    # Loop in batches
     for i, data in enumerate(train_loader):
 
         images, labels = data
-        images= images.view(-1, 3 * 32 * 32)
+        images= images.view(-1, input_size)
         images, labels = Variable(images), Variable(labels)
         optimizer.zero_grad()
         outputs = net(images)
@@ -80,40 +88,40 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-        print('Epoch [%d/%d], Step [%d/%d], Loss: %.4f' % (epoch + 1, num_epochs, i + 1, 5, loss.item()))
+        # print('Epoch [%d/%d], Step [%d/%d], Loss: %.4f' % (epoch + 1, num_epochs, i + 1, 5, loss.item()))
+    print('Epoch [%d/%d],  Loss: %.4f' % (epoch + 1, num_epochs, loss.item()))
 # --------------------------------------------------------------------------------------------
-# There is bug here find it and fix it
+# Overall accuracy rate
 correct = 0
 total = 0
 for images, labels in test_loader:
-    images = Variable(images.view(-1, 3 * 32 * 32))
+    images = Variable(images.view(-1, input_size))
     outputs = net(images)
     _, predicted = torch.max(outputs.data, 1)
     total += labels.size(0)
     correct += (predicted == labels)
 
 
-#print('Accuracy of the network on the 10000 test images: %d %%' % (100 * correct / total))
-print("correct:", correct.sum().item())
-print("total:", total)
-# --------------------------------------------------------------------------------------------
+print('Accuracy of the network on the 10000 test images: %d %%' % (100 * correct.sum().item() / total))
 
-# _, predicted = torch.max(outputs.data, 1)
-# print('Predicted: ', ' '.join('%5s' % classes[predicted[j]] for j in range(4)))
 # --------------------------------------------------------------------------------------------
-# There is bug here find it and fix it
+# Unknown function, commented out
+# _, predicted = torch.max(outputs.data, 1)
+# print('Predicted: ', ' '.join('%5s' % classes[predicted[j]] for j in range(10)))
+# --------------------------------------------------------------------------------------------
+# Accuracy rate by category
 class_correct = list(0. for i in range(10))
 class_total = list(0. for i in range(10))
-for data in test_loader:
-    images, labels = data
-    images = Variable(images.view(-1,3* 32 * 32))
-    outputs = net(images)
-    _, predicted = torch.max(outputs.data, 1)
-    c = (predicted == labels)
-    for i in range(10):
-        label = labels[i]
-        class_correct[label] += c[i]
-        class_total[label] += 1
+
+images, labels = data
+images = Variable(images.view(-1,input_size))
+outputs = net(images)
+_, predicted = torch.max(outputs.data, 1)
+c = (predicted == labels)
+for i in range(10000):
+    label = labels[i].item()
+    class_correct[label] += c[i].item()
+    class_total[label] += 1
 
 # --------------------------------------------------------------------------------------------
 for i in range(10):
