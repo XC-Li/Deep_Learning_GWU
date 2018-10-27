@@ -1,5 +1,5 @@
 """Machine Learning 2 Section 10 @ GWU
-Exam 1 - Solution for Q4
+Exam 1 - Solution for Q8
 Author: Xiaochi (George) Li"""
 
 # ---------------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ torch.cuda.manual_seed(42)
 input_size = 3 * 32 * 32
 hidden_size = 60
 num_classes = 10
-num_epochs = 10
+num_epochs = 50
 batch_size = 10000
 learning_rate = 0.1
 momentum = 0.9
@@ -45,10 +45,12 @@ class Net(nn.Module):
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(hidden_size, num_classes)
         self.t2 = nn.LogSoftmax(dim=1)
+        self.dropout = nn.Dropout(0.5)
 
     def forward(self, x):
         out = self.fc1(x)
         out = self.relu(out)
+        out = self.dropout(out)
         out = self.fc2(out)
         out = self.t2(out)
         return out

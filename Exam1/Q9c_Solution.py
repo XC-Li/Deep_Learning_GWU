@@ -19,7 +19,7 @@ input_size = 3 * 32 * 32
 hidden_size = 60
 num_classes = 10
 num_epochs = 10
-batch_size = 10000
+batch_size = 64
 learning_rate = 0.1
 momentum = 0.9
 # --------------------------------------------------------------------------------------------
@@ -91,6 +91,8 @@ for images, labels in test_loader:
     outputs = net(images)
     _, predicted = torch.max(outputs.data, 1)
     total += labels.size(0)
+    if 10000 - total < batch_size:
+        break
     correct += (predicted == labels)
 
 
@@ -98,22 +100,27 @@ print('Accuracy of the network on the 10000 test images: %d %%' % (100 * correct
 
 # --------------------------------------------------------------------------------------------
 # Accuracy rate by category
-class_correct = list(0. for i in range(10))
-class_total = list(0. for i in range(10))
-
-images, labels = data
-# images = Variable(images.view(-1,input_size).cuda())
-images, labels = Variable(images.view(-1, input_size).cuda()), Variable(labels.cuda())
-outputs = net(images)
-_, predicted = torch.max(outputs.data, 1)
-c = (predicted == labels)
-for i in range(batch_size):
-    label = labels[i].item()
-    class_correct[label] += c[i].item()
-    class_total[label] += 1
-
-# --------------------------------------------------------------------------------------------
-for i in range(10):
-    print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
+# TODO Unknown bug comes from batch size not match the size of test set
+# class_correct = list(0. for i in range(10))
+# class_total = list(0. for i in range(10))
+#
+# images, labels = data
+# # images = Variable(images.view(-1,input_size).cuda())
+# images, labels = Variable(images.view(-1, input_size).cuda()), Variable(labels.cuda())
+# outputs = net(images)
+# _, predicted = torch.max(outputs.data, 1)
+# c = (predicted == labels)
+# count = 0
+# for i in range(batch_size):
+#     count += batch_size
+#     if 10000 - count < batch_size:
+#         break
+#     label = labels[i].item()
+#     class_correct[label] += c[i].item()
+#     class_total[label] += 1
+#
+# # --------------------------------------------------------------------------------------------
+# for i in range(10):
+#     print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
 # --------------------------------------------------------------------------------------------
 torch.save(net.state_dict(), 'model-10min.pkl')

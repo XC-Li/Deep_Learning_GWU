@@ -58,5 +58,36 @@ We copied Q4a to Q6a as the first transfer function option.
 Conclusion: ReLU based transfer function works better than Sigmoid and Tanh as expected.  
 The reason is that ReLU preserve a bigger gradient when the input is far from zero. Thus prevented gradient shrinkage.
 
+## Question 7
+My understanding of this question is to save the gradient with respect to input for each batch, and save it to a csv.
+### Asking professor for clarification
+We modified Q2 
 
+## Question 8
+We copied Q4a to Q8a as no drop out option. And we modified the drop rate between hidden layer and output layer.
 
+|Name|Drop out rate|Accuracy|Average time per epoch|
+|----|----|----|----|
+|Q8a|0%|45%|8.14|
+|Q8a|0%|50%|8.10|
+|Q8b|20%|42%|8.20|
+|Q8c|50%(10epoch)|38%|8.47|
+|Q8d|50%(50epoch)|41%|8.31|
+
+We can see that using drop nodes will harm performance if we did not increase training epoch number.  
+Dropout nodes is a method to do regularization, and can prevent over fitting.  
+However, it will take more time to train the network because the effective neurons in each epoch is reduced.  
+
+## Question 9
+We copied Q4a to Q9a as batch option. And we modified the batch size.
+
+|Name|Batch size|Accuracy|Average time per epoch|
+|----|----|----|----|
+|Q9a|10000(Batch)|45%|8.35|
+|Q9b|1(SGD)|2%|49.79|
+|Q9c|64(Mini batch)|10%|9.00|
+
+Using SGD will significantly slow down the speed,   
+SGD and Mini batch will harm the performance of the network.
+
+## Question 10

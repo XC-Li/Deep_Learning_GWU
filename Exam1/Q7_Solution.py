@@ -1,5 +1,5 @@
 """Machine Learning 2 Section 10 @ GWU
-Exam 1 - Solution for Q4
+Exam 1 - Solution for Q7
 Author: Xiaochi (George) Li"""
 
 # ---------------------------------------------------------------------------------------------
@@ -16,9 +16,9 @@ torch.cuda.manual_seed(42)
 # --------------------------------------------------------------------------------------------
 # Choose the right values for x.
 input_size = 3 * 32 * 32
-hidden_size = 60
+hidden_size = 30
 num_classes = 10
-num_epochs = 10
+num_epochs = 2
 batch_size = 10000
 learning_rate = 0.1
 momentum = 0.9
@@ -62,25 +62,27 @@ criterion = nn.NLLLoss()
 optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
 # --------------------------------------------------------------------------------------------
 # Loop in epochs
-total_time = 0
+input_gradient_trace = []
 for epoch in range(num_epochs):
     # Loop in batches
     start_time = timeit.default_timer()
     for i, data in enumerate(train_loader):
         images, labels = data
         # images= images.view(-1, input_size)
-        images, labels = Variable(images.view(-1, input_size).cuda()), Variable(labels.cuda())
+        # modify the line here to make the input track gradients
+        images, labels = Variable(images.view(-1, input_size).cuda(), requires_grad=True), Variable(labels.cuda())
         optimizer.zero_grad()
         outputs = net(images)
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
+        input_gradient_trace.append(images.grad)
 
         # print('Epoch [%d/%d], Step [%d/%d], Loss: %.4f' % (epoch + 1, num_epochs, i + 1, 50000/batch_size, loss.item()))
     elapsed = timeit.default_timer() - start_time
-    total_time += elapsed
     print('Epoch [%d/%d],  Loss: %.4f, Time:%4f' % (epoch + 1, num_epochs, loss.item(), elapsed))
-print("Average time:", total_time/num_epochs)
+
+print("input gradients:\n", images.grad)
 # --------------------------------------------------------------------------------------------
 # Overall accuracy rate
 correct = 0
@@ -116,4 +118,4 @@ for i in range(batch_size):
 for i in range(10):
     print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
 # --------------------------------------------------------------------------------------------
-torch.save(net.state_dict(), 'model-10min.pkl')
+torch.save(net.state_dict(), 'model.pkl')

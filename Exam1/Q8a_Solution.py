@@ -1,5 +1,5 @@
 """Machine Learning 2 Section 10 @ GWU
-Exam 1 - Solution for Q4
+Exam 1 - Solution for Q8
 Author: Xiaochi (George) Li"""
 
 # ---------------------------------------------------------------------------------------------

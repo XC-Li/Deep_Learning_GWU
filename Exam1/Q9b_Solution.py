@@ -19,7 +19,7 @@ input_size = 3 * 32 * 32
 hidden_size = 60
 num_classes = 10
 num_epochs = 10
-batch_size = 10000
+batch_size = 1
 learning_rate = 0.1
 momentum = 0.9
 # --------------------------------------------------------------------------------------------
@@ -113,7 +113,7 @@ for i in range(batch_size):
     class_total[label] += 1
 
 # --------------------------------------------------------------------------------------------
-for i in range(10):
-    print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
+# for i in range(10):
+#     print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
 # --------------------------------------------------------------------------------------------
 torch.save(net.state_dict(), 'model-10min.pkl')

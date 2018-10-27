@@ -1,5 +1,5 @@
 """Machine Learning 2 Section 10 @ GWU
-Exam 1 - Solution for Q4
+Exam 1 - Solution for Q8
 Author: Xiaochi (George) Li"""
 
 # ---------------------------------------------------------------------------------------------
@@ -45,10 +45,12 @@ class Net(nn.Module):
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(hidden_size, num_classes)
         self.t2 = nn.LogSoftmax(dim=1)
+        self.dropout = nn.Dropout(0.2)
 
     def forward(self, x):
         out = self.fc1(x)
         out = self.relu(out)
+        out = self.dropout(out)
         out = self.fc2(out)
         out = self.t2(out)
         return out
