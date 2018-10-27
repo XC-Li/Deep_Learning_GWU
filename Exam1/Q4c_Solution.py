@@ -1,5 +1,5 @@
 """Machine Learning 2 Section 10 @ GWU
-Exam 1 - Solution for Q2
+Exam 1 - Solution for Q4
 Author: Xiaochi (George) Li"""
 
 # ---------------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ torch.cuda.manual_seed(42)
 input_size = 3 * 32 * 32
 hidden_size = 60
 num_classes = 10
-num_epochs = 60
+num_epochs = 10
 batch_size = 10000
 learning_rate = 0.1
 momentum = 0.9
@@ -43,13 +43,22 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
         self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_size, num_classes)
+        self.fc2 = nn.Linear(hidden_size, 59)
+        self.fc3 = nn.Linear(59, 40)
+        self.fc4 = nn.Linear(40, 20)
+        self.fc5 = nn.Linear(20, num_classes)
         self.t2 = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
         out = self.fc1(x)
         out = self.relu(out)
         out = self.fc2(out)
+        out = self.relu(out)
+        out = self.fc3(out)
+        out = self.relu(out)
+        out = self.fc4(out)
+        out = self.relu(out)
+        out = self.fc5(out)
         out = self.t2(out)
         return out
 # --------------------------------------------------------------------------------------------
@@ -116,4 +125,4 @@ for i in range(batch_size):
 for i in range(10):
     print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
 # --------------------------------------------------------------------------------------------
-torch.save(net.state_dict(), 'model-10min.pkl')
+torch.save(net.state_dict(), 'model.pkl')
