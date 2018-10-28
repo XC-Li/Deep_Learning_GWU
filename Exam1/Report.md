@@ -59,9 +59,38 @@ Conclusion: ReLU based transfer function works better than Sigmoid and Tanh as e
 The reason is that ReLU preserve a bigger gradient when the input is far from zero. Thus prevented gradient shrinkage.
 
 ## Question 7
-My understanding of this question is to save the gradient with respect to input for each batch, and save it to a csv.
-### Asking professor for clarification
-We modified Q2 
+My understanding of this question is to save the gradient with respect to input for each batch, and calculate the standard 
+deviation of the gradients. Then find the index of the max 10.
+
+Firstly, turn on the trace of gradient with respect to input, and record them in a list. See the following code.
+```python
+images, labels = Variable(images.view(-1, input_size).cuda(), requires_grad=True), Variable(labels.cuda())
+input_gradient_trace.append(images.grad.data.cpu())
+```
+
+Then, concatenate them into one tensor, transform to numpy array ,calculate the standard deviation and use argsort to find
+the top 10. Although saving the trace to csv is only one line of code, it's very time consuming. So, I would not recommend
+to save it to CSV/
+See the following code.
+```python
+input_gradient_trace = torch.cat(input_gradient_trace, 0)  # concatenate to a tensor
+import numpy as np
+import pandas as pd
+input_gradient_trace = input_gradient_trace.data.cpu().numpy()  # transform to numpy array
+print("Size of gradient trace:", input_gradient_trace.shape)
+std_grad = np.std(input_gradient_trace, 0)
+max_ten_pixel = std_grad.argsort(kind='quicksort')[-10:][::-1]
+print("Top 10 pixel that has largest standard deviation of the gradient:")
+print(max_ten_pixel)
+# pd.DataFrame(input_gradient_trace).to_csv("gradient_trace.csv")  # save to csv
+```
+
+And we can get the index of pixel that has the top 10 values in standard deviation of gradient in the terminal like:
+```text
+Top 10 pixel that has largest standard deviation of the gradient:
+[ 992 2944 3038 1814  832 2848 2414 2111 1554 2448]
+```
+
 
 ## Question 8
 We copied Q4a to Q8a as no drop out option. And we modified the drop rate between hidden layer and output layer.

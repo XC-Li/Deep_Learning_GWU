@@ -18,7 +18,7 @@ torch.cuda.manual_seed(42)
 input_size = 3 * 32 * 32
 hidden_size = 30
 num_classes = 10
-num_epochs = 2
+num_epochs = 10
 batch_size = 10000
 learning_rate = 0.1
 momentum = 0.9
@@ -76,13 +76,25 @@ for epoch in range(num_epochs):
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
-        input_gradient_trace.append(images.grad)
+        input_gradient_trace.append(images.grad.data.cpu())
 
         # print('Epoch [%d/%d], Step [%d/%d], Loss: %.4f' % (epoch + 1, num_epochs, i + 1, 50000/batch_size, loss.item()))
     elapsed = timeit.default_timer() - start_time
     print('Epoch [%d/%d],  Loss: %.4f, Time:%4f' % (epoch + 1, num_epochs, loss.item(), elapsed))
 
-print("input gradients:\n", images.grad)
+# print("input gradients:\n", images.grad)
+input_gradient_trace = torch.cat(input_gradient_trace, 0)  # concatenate to a tensor
+
+import numpy as np
+import pandas as pd
+input_gradient_trace = input_gradient_trace.data.cpu().numpy()  # transform to numpy array
+print("Size of gradient trace:", input_gradient_trace.shape)
+std_grad = np.std(input_gradient_trace, 0)
+max_ten_pixel = std_grad.argsort(kind='quicksort')[-10:][::-1]
+print("Top 10 pixel that has largest standard deviation of the gradient:")
+print(max_ten_pixel)
+# pd.DataFrame(input_gradient_trace).to_csv("gradient_trace.csv")  # save to csv
+
 # --------------------------------------------------------------------------------------------
 # Overall accuracy rate
 correct = 0
