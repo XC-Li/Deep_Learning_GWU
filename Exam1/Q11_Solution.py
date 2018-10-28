@@ -18,7 +18,7 @@ torch.cuda.manual_seed(42)
 input_size = 3 * 32 * 32
 hidden_size = 60
 num_classes = 10
-num_epochs = 10
+num_epochs = 1
 batch_size = 10000
 learning_rate = 0.1
 momentum = 0.9
@@ -131,5 +131,28 @@ for i in range(10):
     accuracy = class_correct[i] / class_total[i]
     print('Accuracy of %5s : %2d %%' % (classes[i], 100 * accuracy))
     print('Misclassification of %5s : %2d %%' % (classes[i], 100 * (1 - accuracy)))
+# --------------------------------------------------------------------------------------------
+# Visualize network response for an arbitrary input
+import matplotlib.pyplot as plt
+import numpy as np
+
+# functions to show an image
+
+
+def imshow(img):
+    img = img / 2 + 0.5     # unnormalize
+    npimg = img.numpy()
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+    plt.show()
+
+# get some random training images
+dataiter = iter(train_loader)
+images, labels = dataiter.next()
+# todo change this part to get single data out of train loader
+
+# show images
+imshow(torchvision.utils.make_grid(images))
+# print labels
+print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
 # --------------------------------------------------------------------------------------------
 torch.save(net.state_dict(), 'model-10min.pkl')

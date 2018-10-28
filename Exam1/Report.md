@@ -1,7 +1,7 @@
 ## Report for Exam 1
 ### By Xiaochi (George) Li
 
-*All the "we" mentioned in the report is just a idiom in academic writing, this report is completed by myself *
+*All the "we" mentioned in the report is just a idiom in academic writing, this report is completed by myself*
 
 ## Question 1
 After fixing all the bugs and errors. The overall accuracy of the Neural Network is around 44%.   
@@ -101,6 +101,20 @@ labels_np = labels.data.cpu().numpy()
 confusion_matrix = confusion_matrix(labels_np, predicted_np)
 print(confusion_matrix)
 ```
+This is the confusion matrix we may see in the terminal:
+
+```text
+[[517  63  71  19  29  32  31  65 143  84]
+ [ 38 574  17  23  17  19  41  41  60 155]
+ [ 91  33 319  67 105  80 176  95  31  21]
+ [ 37  41  86 271  39 186 148  67  44  62]
+ [ 66  27 138  53 301  48 162 114  31  18]
+ [ 21  43  79 148  48 371 115  90  27  31]
+ [ 12  31  82  78  90  76 598  30   7  36]
+ [ 25  35  54  60  71  67  65 493  25  59]
+ [109  92  25  23  12  27  10  16 609  84]
+ [ 44 196  17  24  11  33  39  44  77 545]]
+```
 
 By definition a confusion matrix C is such that C(i,j) 
 is equal to the number of observations known to be in group i 
@@ -146,4 +160,5 @@ for i in range(10):
     print('Misclassification of %5s : %2d %%' % (classes[i], 100 * (1 - accuracy)))
 ```
 
-
+## Question 11
+We copied Q10 to Q11 and make some modification with it.
