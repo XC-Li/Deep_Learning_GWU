@@ -70,7 +70,7 @@ input_gradient_trace.append(images.grad.data.cpu())
 
 Then, concatenate them into one tensor, transform to numpy array ,calculate the standard deviation and use argsort to find
 the top 10. Although saving the trace to csv is only one line of code, it's very time consuming. So, I would not recommend
-to save it to CSV/
+to save it to CSV.
 See the following code.
 ```python
 input_gradient_trace = torch.cat(input_gradient_trace, 0)  # concatenate to a tensor
@@ -225,3 +225,5 @@ print("Actual:", label.item(), label_name[label.item()])
 print("Predicted:", predicted.item(), label_name[predicted.item()])
 ```
 
+## Question 12 (Bonus)
+No idea...

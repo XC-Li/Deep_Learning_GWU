@@ -1,5 +1,5 @@
-"""Machine Learning 2 Section 10 @ GWU
-Exam 1 - Solution for Q4
+"""Machine Learning 2 Section 12 @ GWU
+Exam 1 - Solution for Q10
 Author: Xiaochi (George) Li"""
 
 # ---------------------------------------------------------------------------------------------
@@ -43,22 +43,13 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
         self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_size, 59)
-        self.fc3 = nn.Linear(59, 40)
-        self.fc4 = nn.Linear(40, 20)
-        self.fc5 = nn.Linear(20, num_classes)
+        self.fc2 = nn.Linear(hidden_size, num_classes)
         self.t2 = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
         out = self.fc1(x)
         out = self.relu(out)
         out = self.fc2(out)
-        out = self.relu(out)
-        out = self.fc3(out)
-        out = self.relu(out)
-        out = self.fc4(out)
-        out = self.relu(out)
-        out = self.fc5(out)
         out = self.t2(out)
         return out
 # --------------------------------------------------------------------------------------------
@@ -102,8 +93,9 @@ for images, labels in test_loader:
     total += labels.size(0)
     correct += (predicted == labels)
 
-
-print('Accuracy of the network on the 10000 test images: %d %%' % (100 * correct.sum().item() / total))
+over_all_accuracy = correct.sum().item() / total
+print('Accuracy of the network on the 10000 test images: %d %%' % (100 * over_all_accuracy))
+print('Misclassification of the network on the 10000 test images: %d %%' % (100 * (1 - over_all_accuracy)))
 
 # --------------------------------------------------------------------------------------------
 # Accuracy rate by category
@@ -116,13 +108,32 @@ images, labels = Variable(images.view(-1, input_size).cuda()), Variable(labels.c
 outputs = net(images)
 _, predicted = torch.max(outputs.data, 1)
 c = (predicted == labels)
-for i in range(batch_size):
+
+"""predicted is the estimated target and labels is the ground truth,
+we can construct the confusion matrix by sklearn easily"""
+import warnings  # Mute warning
+warnings.filterwarnings("ignore")
+
+from sklearn.metrics import confusion_matrix
+predicted_np = predicted.data.cpu().numpy()
+labels_np = labels.data.cpu().numpy()
+confusion_matrix = confusion_matrix(labels_np, predicted_np)
+print(confusion_matrix)
+
+import numpy as np
+np.savetxt("Q12_predicted.csv", labels_np, delimiter=",")
+np.savetxt("Q12_label.csv", labels_np, delimiter=",")
+
+for i in range(c.size()[0]):
     label = labels[i].item()
     class_correct[label] += c[i].item()
     class_total[label] += 1
 
 # --------------------------------------------------------------------------------------------
 for i in range(10):
-    print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
+    # print(class_correct[i], class_total[i])
+    accuracy = class_correct[i] / class_total[i]
+    print('Accuracy of %5s : %2d %%' % (classes[i], 100 * accuracy))
+    print('Misclassification of %5s : %2d %%' % (classes[i], 100 * (1 - accuracy)))
 # --------------------------------------------------------------------------------------------
-torch.save(net.state_dict(), 'model.pkl')
+torch.save(net.state_dict(), 'model-10min.pkl')
