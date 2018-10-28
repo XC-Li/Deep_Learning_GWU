@@ -161,4 +161,38 @@ for i in range(10):
 ```
 
 ## Question 11
-We copied Q10 to Q11 and make some modification with it.
+We copied Q10 to Q11 and make some modification with it.   
+We can get a random sample from the training set, visualize it and compare the true label and predicted label 
+with the following code:
+(part of the code comes from https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html#
+sphx-glr-beginner-blitz-cifar10-tutorial-py)  
+
+```python
+# Visualize network response for an arbitrary input
+from torch.utils.data import RandomSampler
+import matplotlib.pyplot as plt
+import numpy as np
+
+# functions to show an image
+def imshow(img):
+    img = img / 2 + 0.5     # unnormalize
+    npimg = img.numpy()
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+    plt.show()
+    
+label_name = ('airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+
+data_loader = torch.utils.data.DataLoader(train_set, batch_size=1, shuffle=True)
+dataiter = iter(data_loader)
+image, label = dataiter.next()
+input = Variable(image.view(-1, input_size).cuda())
+outputs = net(input)
+_, predicted = torch.max(outputs.data, 1)
+
+# show images
+imshow(torchvision.utils.make_grid(image))
+# print labels
+print("Actual:", label.item(), label_name[label.item()])
+print("Predicted:", predicted.item(), label_name[predicted.item()])
+```
+

@@ -133,6 +133,7 @@ for i in range(10):
     print('Misclassification of %5s : %2d %%' % (classes[i], 100 * (1 - accuracy)))
 # --------------------------------------------------------------------------------------------
 # Visualize network response for an arbitrary input
+from torch.utils.data import RandomSampler
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -145,14 +146,20 @@ def imshow(img):
     plt.imshow(np.transpose(npimg, (1, 2, 0)))
     plt.show()
 
-# get some random training images
-dataiter = iter(train_loader)
-images, labels = dataiter.next()
-# todo change this part to get single data out of train loader
+
+label_name = ('airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+
+data_loader = torch.utils.data.DataLoader(train_set, batch_size=1, shuffle=True)
+dataiter = iter(data_loader)
+image, label = dataiter.next()
+input = Variable(image.view(-1, input_size).cuda())
+outputs = net(input)
+_, predicted = torch.max(outputs.data, 1)
 
 # show images
-imshow(torchvision.utils.make_grid(images))
+imshow(torchvision.utils.make_grid(image))
 # print labels
-print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
+print("Actual:", label.item(), label_name[label.item()])
+print("Predicted:", predicted.item(), label_name[predicted.item()])
 # --------------------------------------------------------------------------------------------
-torch.save(net.state_dict(), 'model-10min.pkl')
+torch.save(net.state_dict(), 'model.pkl')
