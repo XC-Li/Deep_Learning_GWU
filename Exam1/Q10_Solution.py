@@ -1,5 +1,5 @@
 """Machine Learning 2 Section 10 @ GWU
-Exam 1 - Solution for Q4
+Exam 1 - Solution for Q10
 Author: Xiaochi (George) Li"""
 
 # ---------------------------------------------------------------------------------------------
@@ -18,8 +18,8 @@ torch.cuda.manual_seed(42)
 input_size = 3 * 32 * 32
 hidden_size = 60
 num_classes = 10
-num_epochs = 2
-batch_size = 64
+num_epochs = 10
+batch_size = 10000
 learning_rate = 0.1
 momentum = 0.9
 # --------------------------------------------------------------------------------------------
@@ -91,36 +91,42 @@ for images, labels in test_loader:
     outputs = net(images)
     _, predicted = torch.max(outputs.data, 1)
     total += labels.size(0)
-    if 10000 - total < batch_size:
-        break
     correct += (predicted == labels)
 
-
-print('Accuracy of the network on the 10000 test images: %d %%' % (100 * correct.sum().item() / total))
+over_all_accuracy = correct.sum().item() / total
+print('Accuracy of the network on the 10000 test images: %d %%' % (100 * over_all_accuracy))
+print('Misclassification of the network on the 10000 test images: %d %%' % (100 * (1 - over_all_accuracy)))
 
 # --------------------------------------------------------------------------------------------
 # Accuracy rate by category
-# TODO Unknown bug comes from batch size not match the size of test set
-# class_correct = list(0. for i in range(10))
-# class_total = list(0. for i in range(10))
-#
-# images, labels = data
-# # images = Variable(images.view(-1,input_size).cuda())
-# images, labels = Variable(images.view(-1, input_size).cuda()), Variable(labels.cuda())
-# outputs = net(images)
-# _, predicted = torch.max(outputs.data, 1)
-# c = (predicted == labels)
-# count = 0
-# for i in range(c.size()[0]):
-#     count += batch_size
-#     if 10000 - count < batch_size:
-#         break
-#     label = labels[i].item()
-#     class_correct[label] += c[i].item()
-#     class_total[label] += 1
-#
-# # --------------------------------------------------------------------------------------------
-# for i in range(10):
-#     print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
-# # --------------------------------------------------------------------------------------------
+class_correct = list(0. for i in range(10))
+class_total = list(0. for i in range(10))
+
+images, labels = data
+# images = Variable(images.view(-1,input_size).cuda())
+images, labels = Variable(images.view(-1, input_size).cuda()), Variable(labels.cuda())
+outputs = net(images)
+_, predicted = torch.max(outputs.data, 1)
+c = (predicted == labels)
+
+"""predicted is the estimated target and labels is the ground truth,
+we can construct the confusion matrix by sklearn easily"""
+from sklearn.metrics import confusion_matrix
+predicted_np = predicted.data.cpu().numpy()
+labels_np = labels.data.cpu().numpy()
+confusion_matrix = confusion_matrix(labels_np, predicted_np)
+print(confusion_matrix)
+
+for i in range(c.size()[0]):
+    label = labels[i].item()
+    class_correct[label] += c[i].item()
+    class_total[label] += 1
+
+# --------------------------------------------------------------------------------------------
+for i in range(10):
+    # print(class_correct[i], class_total[i])
+    accuracy = class_correct[i] / class_total[i]
+    print('Accuracy of %5s : %2d %%' % (classes[i], 100 * accuracy))
+    print('Misclassification of %5s : %2d %%' % (classes[i], 100 * (1 - accuracy)))
+# --------------------------------------------------------------------------------------------
 torch.save(net.state_dict(), 'model-10min.pkl')

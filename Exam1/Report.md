@@ -91,3 +91,59 @@ Using SGD will significantly slow down the speed,
 SGD and Mini batch will harm the performance of the network.
 
 ## Question 10
+We copied Q4a to Q10 and modified the *Accuracy by Category* Part.  
+Adding the following code will generate the confusion matrix:
+
+```python
+from sklearn.metrics import confusion_matrix
+predicted_np = predicted.data.cpu().numpy()
+labels_np = labels.data.cpu().numpy()
+confusion_matrix = confusion_matrix(labels_np, predicted_np)
+print(confusion_matrix)
+```
+
+By definition a confusion matrix C is such that C(i,j) 
+is equal to the number of observations known to be in group i 
+but predicted to be in group j.
+
+We can get the overall accuracy and misclassification rate by the following code:
+
+```python
+correct = 0
+total = 0
+for images, labels in test_loader:
+    images, labels = Variable(images.view(-1, input_size).cuda()), Variable(labels.cuda())
+    outputs = net(images)
+    _, predicted = torch.max(outputs.data, 1)
+    total += labels.size(0)
+    correct += (predicted == labels)
+
+over_all_accuracy = correct.sum().item() / total
+print('Accuracy of the network on the 10000 test images: %d %%' % (100 * over_all_accuracy))
+print('Misclassification of the network on the 10000 test images: %d %%' % (100 * (1 - over_all_accuracy)))
+```
+
+We can get the accuracy and misclassification rate of each category by the following code:
+
+```python
+class_correct = list(0. for i in range(10))
+class_total = list(0. for i in range(10))
+
+images, labels = data
+images, labels = Variable(images.view(-1, input_size).cuda()), Variable(labels.cuda())
+outputs = net(images)
+_, predicted = torch.max(outputs.data, 1)
+c = (predicted == labels)
+
+for i in range(c.size()[0]):
+    label = labels[i].item()
+    class_correct[label] += c[i].item()
+    class_total[label] += 1
+
+for i in range(10):
+    accuracy = class_correct[i] / class_total[i]
+    print('Accuracy of %5s : %2d %%' % (classes[i], 100 * accuracy))
+    print('Misclassification of %5s : %2d %%' % (classes[i], 100 * (1 - accuracy)))
+```
+
+
