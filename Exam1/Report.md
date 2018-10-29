@@ -193,8 +193,11 @@ for i in range(10):
 We copied Q10 to Q11 and make some modification with it.   
 We can get a random sample from the training set, visualize it and compare the true label and predicted label 
 with the following code:
-(part of the code comes from https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html#
-sphx-glr-beginner-blitz-cifar10-tutorial-py)  
+(part of the code comes from https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html#sphx-glr-beginner-blitz-cifar10-tutorial-py)  
+
+We can get something like:
+
+![](./Q11.JPG)
 
 ```python
 # Visualize network response for an arbitrary input
@@ -225,5 +228,3 @@ print("Actual:", label.item(), label_name[label.item()])
 print("Predicted:", predicted.item(), label_name[predicted.item()])
 ```
 
-## Question 12 (Bonus)
-No idea...
