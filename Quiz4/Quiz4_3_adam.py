@@ -29,7 +29,7 @@ w1 = torch.randn(Q, S, device=device, dtype=dtype)
 w2 = torch.randn(S, a, device=device, dtype=dtype)
 learning_rate = 1e-6
 #----------------------------------------------------------------------------
-for index in range(5000):
+for index in range(1000):
 
     h = p.mm(w1)
     h_relu = h.clamp(min=0)
