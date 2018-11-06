@@ -1,4 +1,6 @@
-"""Quiz 4 """
+"""Machine Learning 2 Section 10 @ GWU
+Quiz 4 - Solution for Q4
+Author: Xiaochi (George) Li"""
 
 import torch
 import numpy as np
