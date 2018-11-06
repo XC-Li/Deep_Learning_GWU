@@ -5,7 +5,7 @@ Author: Xiaochi (George) Li"""
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-import math
+
 #----------------------------------------------------------------------------
 dtype = torch.float
 if torch.cuda.is_available():
@@ -14,7 +14,7 @@ else:
     device = torch.device("cpu")
 #----------------------------------------------------------------------------
 Q = 1            # Input size
-S = 1000             # Number of neurons
+S = 2000             # Number of neurons
 a = 1              # Network output size
 #----------------------------------------------------------------------------
 torch.manual_seed(42)
