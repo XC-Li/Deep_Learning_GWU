@@ -59,12 +59,58 @@ Conclusion: ReLU based transfer function works better than Sigmoid and Tanh as e
 The reason is that ReLU preserve a bigger gradient when the input is far from zero. Thus prevented gradient shrinkage.
 
 ## Question 7
+
+**IMPORTANT: Please put Q7a_Solution.py and Q7b_Solution.py in the same folder and run Q7b_Solution.py**
+
 According professor's explanation on Oct.29, my understanding is that we need to calculate the average gradient for 
 each input (picture) and save them into a csv file.   
 Then, we do the same process several times to get a trace of average gradient, and calculate the mean and 
 standard deviation of the trace to find out the top 10 input(pictures) that has largest influence on the weight of 
 neural network.
 
+To implement this idea, we need to do the following steps:
+Firstly, encapsulate the training part into a function for further use(See **Q7a_Solution.py**).
+* Turn on the gradient record for the input
+```python
+images, labels = Variable(images.view(-1, input_size).cuda(), requires_grad=True), Variable(labels.cuda())
+```
+* Calculate the average gradient and return it to higher lever function, also save it into a CSV file.
+```python
+    input_gradient_trace = torch.cat(input_gradient_trace, 0)  # concatenate to a tensor
+
+    import numpy as np
+
+    input_gradient_trace = input_gradient_trace.data.cpu().numpy()  # transform to numpy array
+    print("Size of gradient trace:", input_gradient_trace.shape)
+    avg_grad = np.average(input_gradient_trace, 1).reshape(1, -1)
+    print("Size of average gradient trace:", avg_grad.shape)
+    with open(file_name, "ab") as trace_file:
+        print("Saving to", file_name)
+        np.savetxt(trace_file, avg_grad, delimiter=',')
+    return avg_grad
+```
+
+Then, construct a higher level function(**Q7b_Solution.py**) which receive the average gradient from Q7a, put them together 
+and calcualte the mean and standard deviation for each input(picture).
+
+Implemented by the following code in **Q7b_Solution.py**:
+```python
+for i in range(trail_length):
+    file_name = "trace" + str(i) + ".csv"
+    if os.path.isfile(file_name):
+        os.remove(file_name)  # if exist the file, then remove it
+    trail_list.append(helper(file_name))  # call the Neural Network and get average gradient and save csv file
+
+trail = np.concatenate(trail_list, axis=0)
+print("The shape of trail matrix:", trail.shape)
+trail_avg = np.average(trail, axis=0)
+trail_std = np.std(trail, axis=0)
+
+max_ten_avg = trail_avg.argsort(kind='quicksort')[-10:][::-1]
+max_ten_std = trail_std.argsort(kind='quicksort')[-10:][::-1]
+```
+
+And we can get the result in the terminal like:
 ```text
 The top ten input(Pictures) that has largest average of gradient:
  [46394 41753 44118 40476 41680 44816 44976 49283 42488 34949]
