@@ -47,6 +47,6 @@ for index in range(max_epoch):
 import numpy as np
 for k,v in param_dict.items():
     v = torch.cat(v,0).detach().numpy()
-    with open(str(k), "ab") as grad_file:
+    with open(str(k) + ".csv", "ab") as grad_file:
         print("saving:", k, "Shape:", v.shape)
         np.savetxt(grad_file, v, delimiter=",")

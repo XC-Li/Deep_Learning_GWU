@@ -103,6 +103,10 @@ It takes more epoch for the GD algorithm to converge in Q2 when the neural netwo
 *Find all the parameters of the network and write a for loop to print 
 the size and name of the parameters.*
 
+```text
+See  1_nn_pytorch_edited3.py
+```
+
 ![named_parameters](https://pytorch.org/docs/stable/nn.html#torch.nn.Module.named_parameters)
 
 ```python
@@ -141,7 +145,7 @@ for index in range(max_epoch):
 import numpy as np
 for k,v in param_dict.items():
     v = torch.cat(v,0).detach().numpy()
-    with open(str(k), "ab") as grad_file:
+    with open(str(k) + ".csv", "ab") as grad_file:
         print("saving:", k, "Shape:", v.shape)
         np.savetxt(grad_file, v, delimiter=",")
 ```
@@ -160,18 +164,42 @@ The size of trace of gradient increased, and the gradient approach zero.
 
 ### Exercise 2
 #### Q1
-*Try Adadelta optimizer for "3_nn_optim.py" file and use different values 
+*Try Ada delta optimizer for "3_nn_optim.py" file and use different values 
 for rho and eps.Do a little search and check and find out what are the effects 
 of each parameter.*
+
+[Adadelta](http://ruder.io/optimizing-gradient-descent/index.html#adadelta) is
+an extension of [Adagrad](http://ruder.io/optimizing-gradient-descent/index.html#adagrad)
+rho is similar to momentum, and it represent the weight on the running average.
+And eps is a smoothing term that avoid division by zero.
 
 #### Q2
 *Q2:  Try SGD optimizer and use different values for momentum and weight decay. 
 Do a little search and check and find out what are the effects of each parameter.*
 
+[Momentum](http://ruder.io/optimizing-gradient-descent/index.html#momentum) is a method
+that helps accelerate SGD in the relevant direction. It's like push a ball down a 
+hill. The ball accumulates momentum as it rolls downhill, becoming faster and faster
+on the way. As a result, we gain faster convergence and reduced oscillation.
+
+[weight decay](https://bbabenko.github.io/weight-decay/) is similar to L2 regularization that
+directly deduct some value from gradient as a penalty of big weight. It can avoid overfitting.
+![](https://bbabenko.github.io/assets/posts/weight_decay/weight_decay_alexnet.png)
 
 #### Q3
 *Try Adam optimizer and find the effect of beta . 
 Do a little search and check and find out what are the effects of each parameter.*
+
+[Adam(Adaptive Moment Estimation)](http://ruder.io/optimizing-gradient-descent/index.html#adam)
+is another method that computes adaptive learning rates for each parameter. In addition 
+to storing an exponentiially decaying average of past squared gradients v_t like Adadelta,
+Adam also keep an exponentially decaying average of past gradients m_t similar to momnetum,
+
+Whereas momentum can be seen as a ball running down a slope, Adam behaves like a heavy ball
+with friction, which thus prefers flat minima in the error surface.
+
+beta_1(default 0.9) is the weight for average of past gradients m_t-1, and beta_2(default 0.999) is the weight for 
+average of past squared gradients v_t-1. 
 
 ### Exercise 3
 #### Q1
