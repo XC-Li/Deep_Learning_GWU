@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------
-# Q1: Modify  the "1_Numpy.py" file and chane the dtype to torch float tensor. 
+# Q1: Modify  the "1_Numpy.py" file and change the dtype to torch float tensor.
 # Save the vale of the performance and  plot the followings:
 
 
