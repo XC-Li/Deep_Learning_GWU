@@ -20,10 +20,13 @@ performance_index = torch.nn.MSELoss(reduction='sum')
 #----------------------------------------------------------------------------
 learning_rate = 1e-4
 loss_list = []
-max_epoch = 10
+max_epoch = 1000
+param_dict = {}
 
 for k, v in model.named_parameters():
     print(k, v.shape)
+    param_dict[k] = []
+
 
 for index in range(max_epoch):
 
@@ -35,11 +38,15 @@ for index in range(max_epoch):
     model.zero_grad()
     loss.backward()
 
+    for k, v in model.named_parameters():
+        param_dict[k].append(v)
+
     for param in model.parameters():
         param.data -= learning_rate * param.grad
 
-plt.plot(range(max_epoch), loss_list)
-# plt.yscale("log")
-plt.xscale("log")
-plt.title("MSE")
-plt.show()
+import numpy as np
+for k,v in param_dict.items():
+    v = torch.cat(v,0).detach().numpy()
+    with open(str(k), "ab") as grad_file:
+        print("saving:", k, "Shape:", v.shape)
+        np.savetxt(grad_file, v, delimiter=",")

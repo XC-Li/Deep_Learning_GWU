@@ -113,10 +113,50 @@ for k, v in model.named_parameters():
 #### Q6
 *Save the gradient values for each weight in the csv file.*
 
+Implementation: 
+```python
+param_dict = {}
+
+for k, v in model.named_parameters():
+    print(k, v.shape)
+    param_dict[k] = []
+
+
+for index in range(max_epoch):
+
+    a = model(p)
+    loss = performance_index(a, t)
+    print(index, loss.item())
+    loss_list.append(loss.item())
+
+    model.zero_grad()
+    loss.backward()
+
+    for k, v in model.named_parameters():
+        param_dict[k].append(v)
+
+    for param in model.parameters():
+        param.data -= learning_rate * param.grad
+
+import numpy as np
+for k,v in param_dict.items():
+    v = torch.cat(v,0).detach().numpy()
+    with open(str(k), "ab") as grad_file:
+        print("saving:", k, "Shape:", v.shape)
+        np.savetxt(grad_file, v, delimiter=",")
+```
+Terminal:
+```text
+saving: 2.bias Shape: (10000,)
+saving: 2.weight Shape: (10000, 100)
+saving: 0.weight Shape: (100000, 1000)
+saving: 0.bias Shape: (100000,)
+```
 
 #### Q7
 *If you increase epochs for Q6 what changes do you see?*
 
+The size of trace of gradient increased, and the gradient approach zero.
 
 ### Exercise 2
 #### Q1
