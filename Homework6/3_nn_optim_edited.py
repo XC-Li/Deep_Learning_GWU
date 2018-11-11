@@ -3,7 +3,7 @@ import torch
 from torch.autograd import Variable
 
 #----------------------------------------------------------------------------
-Batch_size = 25600000     # Batch size
+Batch_size = 256000     # Batch size
 R = 1000            # Input size
 S = 100             # Number of neurons
 a_size = 10              # Network output size

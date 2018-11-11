@@ -204,7 +204,11 @@ average of past squared gradients v_t-1.
 ### Exercise 3
 #### Q1
 *Modify "3_nn_optim.py" in order to find out the cuda capabilities of the system.*
-After modifying the batch size, we found the 
+
+After modifying the batch size, we found the upper limit of the matrix between 256000x1000 to 2560000x1000. 
+If we try to initialize a matrix bigger than the upper limit, it will cause this error:
+
+![](./cuda_out_memory.JPG)
 
 #### Q2
 *Train a 2 layer mlp network using pytorch to approximate the the following function 
