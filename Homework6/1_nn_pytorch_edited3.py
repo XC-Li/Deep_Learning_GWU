@@ -20,7 +20,11 @@ performance_index = torch.nn.MSELoss(reduction='sum')
 #----------------------------------------------------------------------------
 learning_rate = 1e-4
 loss_list = []
-max_epoch = 500
+max_epoch = 10
+
+for k, v in model.named_parameters():
+    print(k, v.shape)
+
 for index in range(max_epoch):
 
     a = model(p)
