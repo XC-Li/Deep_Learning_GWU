@@ -1,5 +1,5 @@
 ## Report for homework 6
-Author: Xiaochi Li
+**Author: Xiaochi *(George)* Li**
 
 ## Part 1 Pytorch Basics
 ### Exercise 1
