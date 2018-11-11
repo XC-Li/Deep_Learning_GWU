@@ -107,7 +107,7 @@ the size and name of the parameters.*
 See  1_nn_pytorch_edited3.py
 ```
 
-![named_parameters](https://pytorch.org/docs/stable/nn.html#torch.nn.Module.named_parameters)
+[named_parameters](https://pytorch.org/docs/stable/nn.html#torch.nn.Module.named_parameters)
 
 ```python
 for k, v in model.named_parameters():
