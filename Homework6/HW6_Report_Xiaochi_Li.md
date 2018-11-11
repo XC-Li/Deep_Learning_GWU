@@ -11,6 +11,25 @@ what are the differences. Explain your findings.*
 The original one use chain rule directly, and the edited one calculate sensitivity first.
 While they have the same effect, calculate the sensitivity by recursion is clearer mathematically.
 
+```python
+# See 2_Tensor_Pytorch_edited.py
+for index in range(500):
+    a_0 = p
+    n_1 = p.mm(w1)
+    a_1 = n_1.clamp(min=0)
+    a_2 = a_1.mm(w2)
+
+    loss = (a_2 - t).pow(2).sum()
+    print(index, loss.item())
+
+    s_2 = 2.0 * (a_2 - t)
+    s_1 = s_2.mm(w2.t())
+    s_1[n_1 < 0] = 0
+
+    w1 = w1 - learning_rate * p.t().mm(s_1)
+    w2 = w2 - learning_rate * a_1.t().mm(s_2)
+```
+
 #### Q2
 *Use the time package of python and test it on "1_Numpy.py" code and save the 
 running time. Change the dtype to torch tensor save the running time as well. 
@@ -31,6 +50,7 @@ Compare the timing results. Explain your findings.*
 |2000|2.32|
 
 Time increases when the number of epoch increase, the relationship of increase between these two factors is linear.
+
 Reason: when the running time for each epoch is same, the more epochs we have, the more total running time will be.
 
 #### Q4
@@ -38,6 +58,7 @@ Reason: when the running time for each epoch is same, the more epochs we have, t
 Comapre the timing results. Explain your findings.*
 
 When we double the data size (``` batch_size=128 ```), the running time increase to 4.30s. 
+
 Reason: When the number of epoch is same, increase data size will lead to more computation.
 
 #### Q5
@@ -51,7 +72,7 @@ to GPU which slow down the overall speed.
 
 ### Exercise 2
 *Q1: Modify  the "1_Numpy.py" file and change the dtype to torch float tensor.
-Save the vale of the performance and  plot the followings:*
+Save the value of the performance and  plot the followings:*
 
 i. Performance index with respect to epochs.
 
@@ -67,7 +88,7 @@ iii. w2 grad
 
 iv. Check your results. Explain each of your plots.
 
-The Gradient Descent algorithm converges after 10 epochs.   
+The Gradient Descent algorithm converges after 10-20 epochs.   
 We can observe that the MSE, gradient of W1 and W2 is close to zero after 10 epochs. Which means the gradient descent
 has found the optimum.
 
@@ -107,7 +128,7 @@ the size and name of the parameters.*
 See  1_nn_pytorch_edited3.py
 ```
 
-[named_parameters](https://pytorch.org/docs/stable/nn.html#torch.nn.Module.named_parameters)
+[Documentation: named_parameters](https://pytorch.org/docs/stable/nn.html#torch.nn.Module.named_parameters)
 
 ```python
 for k, v in model.named_parameters():
