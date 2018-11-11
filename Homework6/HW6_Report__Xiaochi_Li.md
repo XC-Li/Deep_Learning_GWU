@@ -1,7 +1,7 @@
 ## Report for homework 6
 Author: Xiaochi Li
 
-## Part 1 pytorch Basics
+## Part 1 Pytorch Basics
 ### E1Q1:  
 *Rewrite the "2_tensor_pytorch.py" file in Neural Network Design Book,
 Chapter 11 notation (Check the Summary Page) and find out
@@ -67,4 +67,5 @@ The Gradient Descent algorithm converges after 10 epochs.
 We can observe that the MSE, gradient of W1 and W2 is close to zero after 10 epochs. Which means the gradient descent
 has found the optimum.
 
-
+## Part 2 NN Module
+### E1Q1
