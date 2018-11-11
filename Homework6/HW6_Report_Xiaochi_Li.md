@@ -204,13 +204,23 @@ average of past squared gradients v_t-1.
 ### Exercise 3
 #### Q1
 *Modify "3_nn_optim.py" in order to find out the cuda capabilities of the system.*
+After modifying the batch size, we found the 
 
 #### Q2
 *Train a 2 layer mlp network using pytorch to approximate the the following function 
 t= sin(p)  ; -3< p < 3*
 
+```text
+See 3_nn_optim_edited2.py
+```
+
+![](./sin(p).png)
 
 #### Q3
 *Redo the Q2 with 6 layer network.*
 
+```text
+See 3_nn_optim_edited3.py
+```
 
+![](./sin(p)_2.png)
