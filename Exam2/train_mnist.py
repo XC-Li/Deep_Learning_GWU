@@ -134,6 +134,32 @@ for i in range(nrows):
 plt.figure(4)
 plt.imshow(M, cmap='Greys',  interpolation='nearest')
 plt.title('All Kernels for Conv1')
+plt.show()
+#----------------------------------------------------------------------------------------------
+#------------------------------Plot All Kernels for Conv2---------------------------------------
+nrows = 10                                   # Number of Rows
+ncols = 5                                   # Number of Columbs
+ker_size = 5                                # Kernel Size
+Zero_c= np.zeros((ker_size,1))              # Create np.array of zeros
+Zero_r = np.zeros((1,ker_size+1))
+M= np.array([]).reshape(0,ncols*(ker_size+1))
+
+for i in range(nrows):
+    N = np.array([]).reshape((ker_size+1),0)
+
+    for j in range(ncols):
+        All_kernel = net.params['conv2'][0].data[j + i * ncols][0]
+
+        All_kernel = numpy.matrix(All_kernel)
+        All_kernel = np.concatenate((All_kernel,Zero_c),axis=1)
+        All_kernel = np.concatenate((All_kernel, Zero_r), axis=0)
+        N = np.concatenate((N,All_kernel),axis=1)
+    M = np.concatenate((M,N),axis=0)
+
+plt.figure(4)
+plt.imshow(M, cmap='Greys',  interpolation='nearest')
+plt.title('All Kernels for Conv2')
+plt.show()
 #----------------------------------------------------------------------------------------------
 #------------------------------Plot one Kernels for Conv1--------------------------------------
 ker1_0 = net.params['conv1'][0].data[0]      #net.params['conv1'][0] is reffering to Weights
@@ -143,7 +169,7 @@ plt.imshow(ker1_0, cmap='Greys',  interpolation='nearest')
 plt.title('One Kernels for Conv1')
 plt.show()
 #----------------------------------------------------------------------------------------------
-#---------------------------Print Shape ans Sizes for all Layers--------------------------------
+#---------------------------Print Shape and Sizes for all Layers--------------------------------
 
 for layer_name, blob in net.blobs.iteritems():
     print layer_name + '\t' + str(blob.data.shape)

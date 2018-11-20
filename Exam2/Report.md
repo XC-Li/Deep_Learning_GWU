@@ -21,8 +21,15 @@ It means the training is effective.
 ![](./accuracy.png)
 
 ## Question 7
-![](./fm_conv1.png)
+We modified the original ```train_minst.py ``` to let the program visualize the kernels in convolution layer 2.   
+The kernels looks like parts of a number, like a vertical line ,part of a circle, or a corner.  
+These may be helpful in identifying the hand writing numbers.  
+
 ![](./kernel_conv1.png)
+
+![](./kernel_conv2.png)
 
 ## Question 8
 The performance of Convolution network is much better that the multilayer networks in Exam 1
+
+## Question 9
