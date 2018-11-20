@@ -3,9 +3,9 @@
 # depending on the value assigned to $BACKEND.
 set -e
 
-EXAMPLE=/home/ajafari/Deep-Learning/Caffe_/Mini_Project
-DATA=/home/ajafari/Deep-Learning/Caffe_/Mini_Project
-BUILD=/home/ajafari/caffe/build/examples/mnist
+EXAMPLE=~/PycharmProjects/Deep_Learning_GWU/Exam2/
+DATA=~/PycharmProjects/Deep_Learning_GWU/Exam2/
+BUILD=~/caffe/build/examples/mnist
 
 
 BACKEND="lmdb"
