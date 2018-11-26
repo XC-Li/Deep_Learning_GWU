@@ -33,3 +33,11 @@ These may be helpful in identifying the hand writing numbers.
 The performance of Convolution network is much better that the multilayer networks in Exam 1
 
 ## Question 9
+
+|Mini batch size|Average Time|Total Time 20k epoch)|
+|----|----|----|
+|32|0.00290|58.04|
+|64|0.00346|69.21|
+|128|0.00463|92.61|
+|256|0.00745|149.15|
+|512|

@@ -47,6 +47,8 @@ train_loss = np.zeros(niter)
 test_acc = np.zeros(int(np.ceil(niter / test_interval)))
 
 # the main solver loop
+import timeit
+start_time = timeit.default_timer()
 for it in range(niter):
     solver.step(1)  # SGD by Caffe
 
@@ -59,7 +61,11 @@ for it in range(niter):
         print 'Iteration', it, 'testing...','accuracy:',acc
         test_acc[it // test_interval] = acc
 
-
+total_time = timeit.default_timer() - start_time
+print "------------------------------------------------------------"
+print "total time:", total_time
+print "average time", total_time/niter
+print "------------------------------------------------------------"
 #----------------------------------------------------------------------------------------------
 ###########################Plotting Intermediate Layers, Weight################################
 #---------------------------------------Define Functions---------------------------------------
