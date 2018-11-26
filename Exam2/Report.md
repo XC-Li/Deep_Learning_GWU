@@ -106,22 +106,25 @@ New structure: Change kernel size to 3x3 and add one Convolution layer.
 |Original|![](./SGD-loss.png)|![](SGD-accuracy.png)|
 |New|![](new-loss.png)|![](new-accuracy.png)|
 
-|Structure|Loss|Accuracy|
+|Structure|Average Time|Total Time 20k epoch)|
+|----|----|----|
 |Original|0.00290|58.04|
 |New|0.002168|43.37|
 
+Finding: The new structure with smaller kernel size trains faster, however the convergence is slower.
+
  
 ## Question 12
-Add [Adam optimizer](http://caffe.berkeleyvision.org/tutorial/solver.html) in ```lenet_solver.prototxt```
+Modify to [Adam optimizer](http://caffe.berkeleyvision.org/tutorial/solver.html) in ```train_mnist.py```
 
-```text
-type:"Adam"
+```python
+solver = caffe.AdamSolver('lenet_solver.prototxt')
 ```
+
 
 |Optimizer|Loss|Accuracy|
 |----|----|----|
 |SGD|![](./SGD-loss.png)|![](./SGD-accuracy.png)|
 |Adam|![](./adam-loss.png)|![](./adam-accuracy.png)|
 
-No big difference.
-
+Finding: SGD works much better than Adam.

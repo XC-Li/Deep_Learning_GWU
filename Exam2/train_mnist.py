@@ -28,6 +28,7 @@ caffe.set_mode_gpu()
 
 #solver = caffe.get_solver('lenet_solver.prototxt')
 # Use SGDSolver, namely stochastic gradient descent algorithm
+# solver = caffe.AdamSolver('lenet_solver.prototxt')
 solver = caffe.SGDSolver('lenet_solver.prototxt')
 #----------You need to run the following command to goustat works-------------------------------
 #  sudo pip install gpustat
