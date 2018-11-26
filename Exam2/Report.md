@@ -50,3 +50,43 @@ After making the size of mini batch 512, the average time per epoch slowed down 
 
 We can see that the advantage of a larger batch size is that the fluctuation of the loss function is smaller.
 Which means the algorithm converges in a smaller epoch. However the disadvantage is that it will cost more time.
+
+## Question 10
+Add the dropout layer in ```lenet_train_test.prototxt```:
+```text
+layer {
+  name: "drop"
+  type: "Dropout"
+  bottom: "ip1"
+  top: "ip1"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+```
+The accuracy of test after using drop out is still 1.00, so there is no difference.
+
+|No dropout|Dropout=0.5|
+|----|----|
+|![](./batch32.png)|![](./drop50.png)|
+
+## Question 11
+
+|Layer|Parameter Size|Data size after this layer|
+|----|----|----|
+|Conv1|
+
+## Question 12
+Add [Adam optimizer](http://caffe.berkeleyvision.org/tutorial/solver.html) in ```lenet_solver.prototxt```
+
+```text
+type:"Adam"
+```
+
+|Optimizer|Loss|Accuracy|
+|----|----|----|
+|SGD|![](./SGD-loss.png)|![](./SGD-accuracy.png)|
+|Adam|![](./adam-loss.png)|![](./adam-accuracy.png)|
+
+No big difference.
+
