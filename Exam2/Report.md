@@ -72,9 +72,30 @@ The accuracy of test after using drop out is still 1.00, so there is no differen
 
 ## Question 11
 
-|Layer|Parameter Size|Data size after this layer|
-|----|----|----|
-|Conv1|
+Original:  
+
+|Layer|Parameter|Data size after this layer|Number of weight|
+|----|----|----|----|
+|Conv1|20x5x5,s=1|24x24x20|20x5x5|
+|Pool1|2x2,s=2|12x12x20|0|
+|Conv2|50x5x5,s=1|8x8x20x50|50x5x5|
+|Pool2|2x2,s=2|4x4x20x50=16000|0|
+|ip1|-|500|16000x500|
+|ip2|-|10|500x10|
+|**Sum**|-|-|8006750|
+
+New structure: Change kernel size to 3x3 and add one Convolution layer.
+
+|Layer|Parameter|Data size after this layer|Number of weight|
+|----|----|----|----|
+|Conv1|10x3x3,s=1|26x26x10|10x3x3|
+|Pool1|2x2,s=2|13x13x10|0|
+|Conv2|10x3x3,s=1|11x11x10x10|10x3x3|
+|Pool2|2x2,s=2|6x6x10x10|0|
+|Conv3|10x3x3|4x4x10x10x10=16000|10x3x3|
+|ip1|-|500|16000x500|
+|ip2|-|10|500x10|
+|**Sum**|-|-|8005270|
 
 ## Question 12
 Add [Adam optimizer](http://caffe.berkeleyvision.org/tutorial/solver.html) in ```lenet_solver.prototxt```
