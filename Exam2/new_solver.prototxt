@@ -1,6 +1,6 @@
 # The train/test net protocol buffer definition
-net: "lenet_train_test.prototxt"
-# net: "new_model.prototxt"
+# net: "lenet_train_test.prototxt"
+net: "new_model.prototxt"
 type:"Adam"
 
 # test_iter specifies how many forward passes the test should carry out.

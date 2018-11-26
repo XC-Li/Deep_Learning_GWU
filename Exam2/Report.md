@@ -97,6 +97,20 @@ New structure: Change kernel size to 3x3 and add one Convolution layer.
 |ip2|-|10|500x10|
 |**Sum**|-|-|8005270|
 
+|Original|New Structure|
+|----|----|
+|![](./q11-a.JPG)|![](./q11-b.JPG)|
+
+|Structure|Loss|Accuracy|
+|----|----|----|
+|Original|![](./SGD-loss.png)|![](SGD-accuracy.png)|
+|New|![](new-loss.png)|![](new-accuracy.png)|
+
+|Structure|Loss|Accuracy|
+|Original|0.00290|58.04|
+|New|0.002168|43.37|
+
+ 
 ## Question 12
 Add [Adam optimizer](http://caffe.berkeleyvision.org/tutorial/solver.html) in ```lenet_solver.prototxt```
 
