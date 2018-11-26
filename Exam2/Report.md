@@ -40,4 +40,13 @@ The performance of Convolution network is much better that the multilayer networ
 |64|0.00346|69.21|
 |128|0.00463|92.61|
 |256|0.00745|149.15|
-|512|
+|512|0.0128|257.7|
+
+After making the size of mini batch 512, the average time per epoch slowed down by 4.44 times.
+
+|Batch size = 32|Batch size = 512|
+|----|----|
+|![](./batch32.png)|![](./batch512.png)|
+
+We can see that the advantage of a larger batch size is that the fluctuation of the loss function is smaller.
+Which means the algorithm converges in a smaller epoch. However the disadvantage is that it will cost more time.
