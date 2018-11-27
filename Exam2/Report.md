@@ -84,7 +84,8 @@ Original:
 |ip2|-|10|500x10|
 |**Sum**|-|-|8006750|
 
-New structure: Change kernel size to 3x3 and add one Convolution layer.
+New structure: Change kernel size to 3x3 and add one Convolution layer.  
+See `new_train_mnist.py`
 
 |Layer|Parameter|Data size after this layer|Number of weight|
 |----|----|----|----|
